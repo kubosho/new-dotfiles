@@ -1,0 +1,12 @@
+"$schema" = 'https://starship.rs/config-schema.json'
+
+add_newline = false
+scan_timeout = 10
+
+palette = 'trapezium'
+[palettes.trapezium]
+east = '#83cbec'
+west = '#feca8b'
+south = '#f57988'
+north = '#58c3a9'
+
