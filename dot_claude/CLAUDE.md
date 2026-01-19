@@ -25,6 +25,7 @@ When the user says "What do you think?", remember that the user doesn't necessar
 
 ## Commit Messages
 
+- Use Conventional Commits format (e.g., `feat:`, `fix:`, `docs:`, `refactor:`)
 - Explain "why" (the reason/motivation for the change), not just "what"
 
 ## Coding Style Priorities
