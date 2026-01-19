@@ -1,2 +1,9 @@
 eval "$(devbox global shellenv)"
+
+# Sheldon plugin manager
+eval "$(sheldon source)"
+
+# Completion settings
+autoload -Uz compinit && compinit
+
 eval "$(starship init zsh)"
