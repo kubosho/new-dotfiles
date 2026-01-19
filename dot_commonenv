@@ -73,6 +73,9 @@ if [ -f /proc/version ]; then
   fi
 fi
 
+# Antigravity
+export PATH="${HOME}/.antigravity/antigravity/bin:$PATH"
+
 # Snapcraft
 if [ -d "/snap/bin" ]; then
   export PATH="/snap/bin:${PATH}"
