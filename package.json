@@ -1,0 +1,18 @@
+{
+  "name": "chezmoi",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "lint:secret": "secretlint \"**/*\"",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "*": "secretlint"
+  },
+  "devDependencies": {
+    "@secretlint/secretlint-rule-preset-recommend": "11.3.0",
+    "husky": "9.1.7",
+    "lint-staged": "16.2.7",
+    "secretlint": "11.3.0"
+  }
+}
