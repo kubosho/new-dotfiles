@@ -1,5 +1,5 @@
 {
-  "name": "chezmoi",
+  "name": "@kubosho/new-dotfiles",
   "version": "1.0.0",
   "private": true,
   "scripts": {
