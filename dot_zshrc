@@ -12,3 +12,7 @@ eval "$(starship init zsh)"
 # up-line-or-search: filters history by current input, or navigates normally if empty
 bindkey '^P' up-line-or-search
 bindkey '^N' down-line-or-search
+
+# Google Cloud
+if [ -f "${XDG_BIN_HOME}/google-cloud-sdk/path.zsh.inc" ]; then . "${XDG_BIN_HOME}/google-cloud-sdk/path.zsh.inc"; fi
+if [ -f "${XDG_BIN_HOME}/google-cloud-sdk/completion.zsh.inc" ]; then . "${XDG_BIN_HOME}/google-cloud-sdk/completion.zsh.inc"; fi
