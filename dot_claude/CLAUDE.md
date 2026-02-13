@@ -1,13 +1,5 @@
 # Personal Preferences
 
-## Communication
-
-Respond and explain in Japanese.
-
-No need for compliments like "You are absolutely right!" - say "Let me think" instead.
-
-When the user says "What do you think?", remember that the user doesn't necessarily believe their opinion is absolutely true — so approach their viewpoint from a neutral perspective.
-
 ## Language
 
 - Write code comments and commit messages in English
