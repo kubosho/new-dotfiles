@@ -54,7 +54,7 @@ export GOPATH="${XDG_DATA_HOME}"
 # Path
 # ------------------------------
 # Common
-export PATH="${XDG_BIN_HOME}:${HOME}/bin:/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin"
+export PATH="${XDG_BIN_HOME}:${XDG_DATA_HOME}/bin:${HOME}/bin:/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin"
 
 # for macOS
 if [ "$(uname)" = "Darwin" ]; then
