@@ -8,6 +8,14 @@ autoload -Uz compinit && compinit
 
 eval "$(starship init zsh)"
 
+# ghq + fzf: select repository and cd into it
+gf() {
+  local repo=$(ghq list | fzf)
+  if [ -n "$repo" ]; then
+    cd "$(ghq root)/$repo"
+  fi
+}
+
 # Key bindings for history navigation
 # up-line-or-search: filters history by current input, or navigates normally if empty
 bindkey '^P' up-line-or-search
