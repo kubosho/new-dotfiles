@@ -3,6 +3,7 @@
   "env": {
     "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
   },
+  "language": "~/.claude/rules/personality.md に沿って返答",
   "statusLine": {
     "type": "command",
     "command": "bunx -y ccstatusline@latest",
