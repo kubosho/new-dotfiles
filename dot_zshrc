@@ -1,4 +1,5 @@
-eval "$(devbox global shellenv)"
+# devbox: skip PATH replacement to preserve commonenv's priority order
+eval "$(devbox global shellenv | grep -v '^export PATH=')"
 eval "$(mise activate zsh)"
 
 # Sheldon plugin manager
