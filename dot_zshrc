@@ -1,4 +1,5 @@
 eval "$(devbox global shellenv)"
+eval "$(mise activate zsh)"
 
 # Sheldon plugin manager
 eval "$(sheldon source)"
