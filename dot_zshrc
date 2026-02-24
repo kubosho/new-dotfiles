@@ -10,6 +10,12 @@ autoload -Uz compinit && compinit
 
 eval "$(starship init zsh)"
 
+# Force non-blinking bar cursor on each prompt
+# Ghostty's cursor-style-blink=false only sets the initial state;
+# applications can override it via DECSCUSR escape sequences.
+zle-line-init() { printf '\e[6 q' }
+zle -N zle-line-init
+
 # ghq + fzf: select repository and cd into it
 gf() {
   local repo=$(ghq list | fzf)
