@@ -1,0 +1,17 @@
+background = #003760
+background-blur = 8
+background-opacity = 0.95
+
+clipboard-read = allow
+clipboard-write = allow
+
+cursor-opacity = 1
+cursor-style = block
+cursor-style-blink = false
+
+font-size = 14
+
+keybind = shift+enter=text:\n
+
+maximize = true
+
