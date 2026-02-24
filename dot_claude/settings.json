@@ -1,15 +1,20 @@
 {
-  "autoUpdatesChannel": "latest",
   "env": {
     "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
   },
-  "language": "~/.claude/rules/personality.md に沿って返答",
+  "permissions": {
+    "deny": [
+      "NotebookEdit"
+    ]
+  },
   "statusLine": {
     "type": "command",
     "command": "bunx -y ccstatusline@latest",
     "padding": 0
   },
-  "permissions": {
-    "deny": ["NotebookEdit"]
+  "language": "~/.claude/rules/personality.md に沿って返答",
+  "autoUpdatesChannel": "latest",
+  "enabledPlugins": {
+    "frontend-design@claude-plugins-official": true
   }
 }
