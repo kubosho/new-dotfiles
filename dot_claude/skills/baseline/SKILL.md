@@ -19,16 +19,20 @@ Query the Web Platform Status API to check browser Baseline status of web featur
 
 | Operator | Example |
 |----------|---------|
-| `name:<keyword>` | `name:grid` |
-| `baseline_status:<status>` | `baseline_status:widely` |
+| `available_date:<browser>:<start>..<end>` | `available_date:chrome:2023-01-01..2024-01-01` |
 | `available_on:<browser>` | `available_on:chrome` |
-| `-available_on:<browser>` | `-available_on:firefox` |
+| `baseline_date:<start>..<end>` | `baseline_date:2023-01-01..2024-01-01` |
+| `baseline_status:<status>` | `baseline_status:widely` |
+| `group:<group>` | `group:css` |
+| `name:<keyword>` | `name:grid` |
+| `snapshot:<snapshot>` | `snapshot:ecmascript-5` |
 | (plain text) | `grid` |
 
 - **Statuses**: `widely`, `newly`, `limited`, `no_data`
 - **Browsers**: `chrome`, `edge`, `firefox`, `safari`
-- **AND**: separate with spaces — `name:grid baseline_status:widely`
-- **OR**: join with `+OR+` — `name:dialog+OR+name:popover`
+- **AND**: separate with spaces
+- **OR**: join with `+OR+`
+- **Negate**: prefix with `-`
 
 ### Natural Language Translation
 
