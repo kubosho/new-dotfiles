@@ -3,18 +3,17 @@
     "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
   },
   "permissions": {
-    "deny": [
-      "NotebookEdit"
-    ]
+    "deny": ["NotebookEdit"]
   },
   "statusLine": {
     "type": "command",
     "command": "bunx -y ccstatusline@latest",
     "padding": 0
   },
-  "language": "~/.claude/rules/personality.md に沿って返答",
-  "autoUpdatesChannel": "latest",
   "enabledPlugins": {
-    "frontend-design@claude-plugins-official": true
-  }
+    "frontend-design@claude-plugins-official": true,
+    "chrome-devtools-mcp@chrome-devtools-plugins": true
+  },
+  "language": "~/.claude/rules/personality.md に沿って返答",
+  "autoUpdatesChannel": "latest"
 }
