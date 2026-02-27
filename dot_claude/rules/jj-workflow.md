@@ -1,20 +1,49 @@
 # Jujutsu (jj) Workflow
 
-**Applicability**: These rules apply only when the project root contains a `.jj` directory (i.e., the repository is managed by Jujutsu). If `.jj` does not exist, ignore this file entirely and use git commands as usual.
+**Applicability**: These rules apply only when the project root contains a `.jj` directory (i.e., the repository is managed by Jujutsu).
 
-## Pre-write Gate
+## Gates
 
-**Before modifying any file (Edit/Write tool), always run `jj status` first.**
+### Pre-write: `jj status`
 
-- If the working copy is empty or belongs to a different task → run `jj new main`
-- If the working copy already has changes for the current task → proceed
-- Never skip this check. Reading files is fine without it; writing is not.
+Every file modification (Edit/Write) requires `jj status` beforehand.
 
-## Non-interactive only
+- Working copy empty or belongs to a different task → `jj new main`
+- Working copy has changes for the current task → proceed
 
-jj commands that accept a message (describe, squash, split, etc.) will open an interactive editor by default, which fails in this environment. **Always pass `-m "message"` to avoid opening an editor.**
+### Post-squash: `jj log`
+
+Every `jj squash --into` requires `jj log` afterward. The operation rewrites the target commit and bookmarks may detach.
+
+- Bookmark still attached → proceed
+- Bookmark detached → `jj bookmark set <name> -r <rev>`
+
+### Pre-push: `jj log` + git hooks
+
+Every `jj git push` requires two checks beforehand:
+
+1. `jj log` — verify bookmark state
+   - Bookmark attached to the target commit → proceed
+   - Bookmark shows only `<name>@origin` with no local counterpart → push deletes the remote branch. Run `jj bookmark set <name> -r <rev>` first.
+2. Git hook runner — jj does not run git hooks automatically. If a hook runner config exists in the project root (e.g., `lefthook.yml`, `.husky/`), run the hooks that correspond to git hook timing manually. Map: `pre-commit` and `pre-push` both fire before `jj git push`; `commit-msg` fires after `jj describe`.
+
+### Example: squash and push
+
+```bash
+jj squash --into kkmpxqrs -m "fix: apply focus-visible outline"
+jj log --limit 3                                          # post-squash gate
+# → bookmark missing from kkmpxqrs → re-attach
+jj bookmark set fix/focus -r kkmpxqrs
+jj log --limit 3                                          # pre-push gate (1)
+# → bookmark attached
+<hook-runner> run pre-push                                # pre-push gate (2)
+# → checks passed → safe to push
+jj git push -b fix/focus
+```
 
 ## Commands
+
+All commands that accept a message require `-m "message"`. No interactive editor.
 
 | Action | Command |
 |--------|---------|
