@@ -3,7 +3,9 @@
     "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
   },
   "permissions": {
-    "deny": ["NotebookEdit"]
+    "deny": [
+      "NotebookEdit"
+    ]
   },
   "statusLine": {
     "type": "command",
@@ -12,7 +14,8 @@
   },
   "enabledPlugins": {
     "frontend-design@claude-plugins-official": true,
-    "chrome-devtools-mcp@chrome-devtools-plugins": true
+    "chrome-devtools-mcp@chrome-devtools-plugins": true,
+    "document-skills@anthropic-agent-skills": true
   },
   "language": "~/.claude/rules/personality.md に沿って返答",
   "autoUpdatesChannel": "latest"
