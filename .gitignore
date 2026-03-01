@@ -13,6 +13,9 @@ node_modules/
 **/.claude/settings.local.json
 **/.serena/cache/*
 
+# Skill eval workspaces
+dot_claude/skills/*-workspace/
+
 
 # --------------------
 # Windows
