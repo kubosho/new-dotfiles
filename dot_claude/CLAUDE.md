@@ -38,6 +38,10 @@
 - No unnecessary abstractions
 - Delete unused code completely (no backward-compatibility hacks)
 
+## Pull Requests
+
+- Use the `pr-description` skill when writing PR body text
+
 ## Plan Files
 
 - Use human-readable filenames for plan files in ~/.claude/plans/ directory
