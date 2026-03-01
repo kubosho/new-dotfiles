@@ -18,7 +18,7 @@ Every line of code must justify its existence. If you cannot explain why a line 
 | Minimalism | Inline one-use logic. Flat conditionals. | Extract one-use helpers. Strategy pattern for one case. |
 | Coherence | Mirror existing style, naming, error idiom. | Introduce a "better" pattern that conflicts with the current one. |
 | Error handling | Handle errors that can actually occur. Include values and context in messages. | Re-validate already-validated inputs. Guard against what the type system guarantees. |
-| Comments | Explain WHY: business rules, trade-offs, workarounds. | Restate WHAT the code does. Add section headers (`// Validation`). |
+| Comments | Explain WHY: business rules, trade-offs, workarounds. Use precise terms that match what the code does. One point per sentence. | Restate WHAT the code does. Add section headers (`// Validation`). Chain points with em dashes or semicolons. Use vague terms when a precise one exists. |
 | Scope | Change what was asked. | "Improve" neighboring code. Add docstrings to unchanged code. |
 | Tests | Test observable behavior from the user's perspective. Integration tests over mock-heavy unit tests. | Test getters/setters/framework wiring. Assert that a mock was called with specific arguments. |
 
@@ -36,6 +36,24 @@ Every line of code must justify its existence. If you cannot explain why a line 
 - Re-exports or shims for removed code
 
 ## Examples
+
+Sloppy comment style (Go):
+```go
+// AI slop: em dash joins two claims. "still work" is vague.
+// Old cursors without an ID still work — they just lose the tie-breaker.
+
+// Intentional: each sentence makes one precise claim
+// Cursors without an ID are accepted for backward compatibility
+// but may skip or duplicate rows on timestamp collisions.
+```
+
+```go
+// AI slop: imprecise term ("split" vs what SplitN returns)
+// caps the split at 2 parts
+
+// Intentional: describes the actual behavior
+// limits the returned slice to 2 elements
+```
 
 Restating comments (Python):
 ```python
