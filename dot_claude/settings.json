@@ -9,8 +9,7 @@
   },
   "statusLine": {
     "type": "command",
-    "command": "bunx -y ccstatusline@latest",
-    "padding": 0
+    "command": "bun x ccusage statusline"
   },
   "enabledPlugins": {
     "frontend-design@claude-plugins-official": true,
