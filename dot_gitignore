@@ -1,4 +1,13 @@
 # --------------------
+# Jujutsu (jj)
+# --------------------
+
+# Conflict representation directories created by jj in Git commits
+.jjconflict-base-*/
+.jjconflict-side-*/
+
+
+# --------------------
 # Claude
 # --------------------
 
