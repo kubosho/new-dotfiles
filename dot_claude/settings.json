@@ -17,6 +17,5 @@
     "document-skills@anthropic-agent-skills": true
   },
   "language": "~/.claude/rules/personality.md に沿って返答",
-  "autoUpdatesChannel": "latest",
-  "plansDirectory": "~/.local/share/plans/Plans"
+  "autoUpdatesChannel": "latest"
 }
