@@ -18,5 +18,5 @@
   },
   "language": "~/.claude/rules/personality.md に沿って返答",
   "autoUpdatesChannel": "latest",
-  "plansDirectory": "~/.local/share/plans"
+  "plansDirectory": "~/.local/share/plans/Plans"
 }
