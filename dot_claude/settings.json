@@ -16,6 +16,14 @@
     "chrome-devtools-mcp@chrome-devtools-plugins": true,
     "document-skills@anthropic-agent-skills": true
   },
+  "extraKnownMarketplaces": {
+    "my-skills": {
+      "source": {
+        "source": "github",
+        "repo": "kubosho/my-skills"
+      }
+    }
+  },
   "language": "~/.claude/rules/personality.md に沿って返答",
   "autoUpdatesChannel": "latest",
   "model": "opus"
