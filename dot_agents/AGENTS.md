@@ -1,5 +1,7 @@
 # Personal Preferences
 
+**MUST**: First, read ~/.agents/rules/personality.md.
+
 ## Language
 
 - Write code comments and commit messages in English
