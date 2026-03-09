@@ -60,9 +60,3 @@ All commands that accept a message require `-m "message"`. No interactive editor
 Use Conventional Commits: `type: description`
 
 Types: feat, fix, refactor, docs, test, chore, perf, ci
-
-Always add co-author line at the end:
-
-```
-Co-Authored-By: Claude <noreply@anthropic.com>
-```
