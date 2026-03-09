@@ -44,5 +44,5 @@
 
 ## Plan Files
 
-- Use human-readable filenames for plan files in ~/.local/share/plans/Plans/ directory
+- Use human-readable filenames for plan files in ~/.local/share/obsidian/Plans/ directory
 - Format: `YYYY-MM-DD-task-name.md` (e.g., 2026-01-14-add-user-auth.md)
