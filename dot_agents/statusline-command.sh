@@ -57,10 +57,13 @@ format_tokens() {
   fi
 }
 
+# effort level from settings
+effort="$(jq -r '.effortLevel // "default"' ~/.claude/settings.json 2>/dev/null || echo "default")"
+
 # --------------------------------------------------------------------------
-# Line 1: Model name
+# Line 1: Model name + effort
 # --------------------------------------------------------------------------
-LINE1="$(ansi_rgb 217 119 87 "🤖 ${model_display}")"  # #D97757 Claude brand
+LINE1="$(ansi_rgb 217 119 87 "🤖 ${model_display}")${SEP}$(ansi_rgb $GRAY_R $GRAY_G $GRAY_B "🧠 ${effort}")"
 
 # --------------------------------------------------------------------------
 # Line 2: context usage + cost
