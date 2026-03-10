@@ -60,7 +60,7 @@ format_tokens() {
 # --------------------------------------------------------------------------
 # Line 1: Model name
 # --------------------------------------------------------------------------
-LINE1="$(ansi_rgb $GREEN_R $GREEN_G $GREEN_B "🤖 ${model_display}")"
+LINE1="$(ansi_rgb 217 119 87 "🤖 ${model_display}")"  # #D97757 Claude brand
 
 # --------------------------------------------------------------------------
 # Line 2: context usage + cost
@@ -68,14 +68,14 @@ LINE1="$(ansi_rgb $GREEN_R $GREEN_G $GREEN_B "🤖 ${model_display}")"
 context_used=$(( context_size * context_pct / 100 ))
 ctx_display="$(ansi_rgb $GRAY_R $GRAY_G $GRAY_B "📊 ")$(colored_pct "$context_pct")$(ansi_rgb $GRAY_R $GRAY_G $GRAY_B " $(format_tokens $context_used)/$(format_tokens $context_size)")"
 cost_str="$(printf '$%.2f' "$total_cost")"
-cost_display="$(ansi_rgb $GREEN_R $GREEN_G $GREEN_B "💰 ${cost_str}")"
+cost_display="$(ansi_rgb 255 215 0 "💰 ${cost_str}")"  # #FFD700 gold
 
 LINE2="${ctx_display}${SEP}${cost_display}"
 
 # --------------------------------------------------------------------------
 # Line 3: diff stats + VCS info (jj or git)
 # --------------------------------------------------------------------------
-added=0; deleted=0
+added=0; deleted=0; files_changed=0
 vcs_info="?"
 is_jj=0
 
@@ -87,6 +87,7 @@ if [[ -n "$cwd" ]] && cd "$cwd" 2>/dev/null; then
     # diff stats from jj
     jj_diff="$(jj diff --stat --no-pager 2>/dev/null | tail -1 || true)"
     if [[ -n "$jj_diff" && "$jj_diff" == *"changed"* ]]; then
+      files_changed="$(echo "$jj_diff" | grep -oE '[0-9]+ file' | grep -oE '[0-9]+' || echo 0)"
       added="$(echo "$jj_diff" | grep -oE '[0-9]+ insertion' | grep -oE '[0-9]+' || echo 0)"
       deleted="$(echo "$jj_diff" | grep -oE '[0-9]+ deletion' | grep -oE '[0-9]+' || echo 0)"
     fi
@@ -100,32 +101,49 @@ if [[ -n "$cwd" ]] && cd "$cwd" 2>/dev/null; then
     # working copy status: empty or modified
     wc_empty="$(jj log -r @ --no-graph -T 'if(empty, "empty", "modified")' --no-pager 2>/dev/null || echo "?")"
 
-    # Build vcs_info: "jj <change_id> <bookmark> (<status>)"
-    vcs_info="jj ${change_id}"
+    # working copy description (first line)
+    wc_desc="$(jj log -r @ --no-graph -T 'description.first_line()' --no-pager 2>/dev/null || true)"
+
+    # Build vcs display: 🥋 <change_id> <bookmark> (<status>)
+    vcs_colored="🥋 $(ansi_rgb 178 132 190 "$change_id")"  # #B284BE purple for revision
     if [[ -n "$bookmarks" ]]; then
-      vcs_info+=" ${bookmarks}"
+      vcs_colored+=" $(ansi_rgb $GREEN_R $GREEN_G $GREEN_B "$bookmarks")"  # green for bookmark
     fi
-    vcs_info+=" (${wc_empty})"
+    vcs_colored+="$(ansi_rgb $GRAY_R $GRAY_G $GRAY_B " (${wc_empty})")"
   else
     # Fall back to git
     branch="$(git -c core.hooksPath=/dev/null rev-parse --abbrev-ref HEAD 2>/dev/null || echo "?")"
     diff_stat="$(git -c core.hooksPath=/dev/null diff --shortstat HEAD 2>/dev/null || true)"
     if [[ -n "$diff_stat" ]]; then
+      files_changed="$(echo "$diff_stat" | grep -oE '[0-9]+ file' | grep -oE '[0-9]+' || echo 0)"
       added="$(echo "$diff_stat" | grep -oE '[0-9]+ insertion' | grep -oE '[0-9]+' || echo 0)"
       deleted="$(echo "$diff_stat" | grep -oE '[0-9]+ deletion' | grep -oE '[0-9]+' || echo 0)"
     fi
-    vcs_info="🔀 ${branch}"
+    vcs_colored="🐙 $(ansi_rgb $GREEN_R $GREEN_G $GREEN_B "$branch")"  # green for branch
   fi
 fi
 
-[[ -z "$added" ]]   && added=0
-[[ -z "$deleted" ]] && deleted=0
+[[ -z "$added" ]]         && added=0
+[[ -z "$deleted" ]]       && deleted=0
+[[ -z "$files_changed" ]] && files_changed=0
 
-diff_colored="$(ansi_rgb $GREEN_R $GREEN_G $GREEN_B "✏️ +${added}/-${deleted}")"
-vcs_colored="$(ansi_rgb $GREEN_R $GREEN_G $GREEN_B "$vcs_info")"
+files_display="$(ansi_rgb $GRAY_R $GRAY_G $GRAY_B "📄 ${files_changed}")"
+diff_colored="$(ansi_rgb $GREEN_R $GREEN_G $GREEN_B "+${added}")$(ansi_rgb $GRAY_R $GRAY_G $GRAY_B "/")$(ansi_rgb $RED_R $RED_G $RED_B "-${deleted}")"
+diff_colored="✏️ ${diff_colored} ${files_display}"
 LINE3="${diff_colored}${SEP}${vcs_colored}"
+
+# --------------------------------------------------------------------------
+# Line 4: jj working copy description (jj only)
+# --------------------------------------------------------------------------
+LINE4=""
+if (( is_jj )) && [[ -n "$wc_desc" ]]; then
+  LINE4="$(ansi_rgb $GRAY_R $GRAY_G $GRAY_B "💬 ${wc_desc}")"
+fi
 
 # --------------------------------------------------------------------------
 # Output
 # --------------------------------------------------------------------------
 printf "%s\n%s\n%s\n" "$LINE1" "$LINE2" "$LINE3"
+if [[ -n "$LINE4" ]]; then
+  printf "%s\n" "$LINE4"
+fi
