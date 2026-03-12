@@ -10,7 +10,7 @@
   },
   "statusLine": {
     "type": "command",
-    "command": "bash ~/.agents/statusline-command.sh"
+    "command": "~/.claude/statusline-command.sh"
   },
   "enabledPlugins": {
     "frontend-design@claude-plugins-official": true,

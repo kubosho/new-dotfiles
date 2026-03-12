@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# ~/.agents/statusline-command.sh
+# ~/.claude/statusline-command.sh
 # Claude Code status line: model, context %, git/jj diff stats, rate limit bars
 
 set -euo pipefail
