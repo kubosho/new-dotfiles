@@ -5,11 +5,12 @@
   "permissions": {
     "deny": [
       "NotebookEdit"
-    ]
+    ],
+    "defaultMode": "auto"
   },
   "statusLine": {
     "type": "command",
-    "command": "~/.agents/statusline-command.sh"
+    "command": "bash ~/.agents/statusline-command.sh"
   },
   "enabledPlugins": {
     "frontend-design@claude-plugins-official": true,
@@ -33,5 +34,7 @@
   },
   "language": "~/.claude/rules/personality.md に沿って返答",
   "autoUpdatesChannel": "latest",
-  "model": "opus"
+  "model": "opus",
+  "effortLevel": "high",
+  "skipAutoPermissionPrompt": true
 }
