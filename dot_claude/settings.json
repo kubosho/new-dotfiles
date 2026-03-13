@@ -35,6 +35,5 @@
   "language": "~/.claude/rules/personality.md に沿って返答",
   "autoUpdatesChannel": "latest",
   "model": "opus",
-  "effortLevel": "high",
   "skipAutoPermissionPrompt": true
 }
