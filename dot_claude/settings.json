@@ -33,7 +33,7 @@
       }
     }
   },
-  "language": "~/.claude/rules/personality.md に沿って返答",
+  "language": "~/.agents/personalities/hiro.md に沿って返答",
   "autoUpdatesChannel": "latest",
   "skipAutoPermissionPrompt": true
 }

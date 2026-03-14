@@ -1,6 +1,6 @@
 # Personal Preferences
 
-**MUST**: First, read ~/.agents/rules/personality.md.
+**MUST**: First, read ~/.agents/personalities/hiro.md.
 
 ## Language
 
