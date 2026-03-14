@@ -17,19 +17,19 @@
     "chrome-devtools-mcp@chrome-devtools-plugins": true,
     "document-skills@anthropic-agent-skills": true,
     "dig@kuu-marketplace": true,
-    "kubosho-skills@my-skills": true
+    "test-principles@kubosho-skills": true
   },
   "extraKnownMarketplaces": {
-    "my-skills": {
-      "source": {
-        "source": "github",
-        "repo": "kubosho/my-skills"
-      }
-    },
     "kuu-marketplace": {
       "source": {
         "source": "github",
         "repo": "fumiya-kume/claude-code"
+      }
+    },
+    "kubosho-skills": {
+      "source": {
+        "source": "github",
+        "repo": "kubosho/my-skills"
       }
     }
   },
