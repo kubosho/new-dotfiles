@@ -1,62 +1,56 @@
 # Jujutsu (jj) Workflow
 
-**Applicability**: These rules apply only when the project root contains a `.jj` directory (i.e., the repository is managed by Jujutsu).
+Applies when `.jj` exists in the project root.
 
-## Gates
+## Outcome
 
-### Pre-write: `jj status`
+Every commit carries a single reason and motivation for the change, making the history alone sufficient to trace intent.
 
-Every file modification (Edit/Write) requires `jj status` beforehand.
+## Constraints
 
-- Working copy empty or belongs to a different task → `jj new main`
-- Working copy has changes for the current task → proceed
+- All commands that accept a message use `-m "message"`. No interactive editor.
+- Commit message format:
+  ```
+  type: summary
+                          ← blank line
+  body                    ← optional: omit if summary alone conveys the reason
+                          ← blank line
+  trailers                ← optional: e.g. Co-Authored-By
+  ```
+  - Types: feat, fix, refactor, docs, test, chore, perf, ci
+  - Body: why the change was made, in the minimum words needed. No line breaks.
 
-### Post-squash: `jj log`
+## Invariants
 
-Every `jj squash --into` requires `jj log` afterward. The operation rewrites the target commit and bookmarks may detach.
+These conditions must hold true at each stage. When violated, the fix restores them.
 
-- Bookmark still attached → proceed
-- Bookmark detached → `jj bookmark set <name> -r <rev>`
+### Working copy belongs to the current task
 
-### Pre-push: `jj log` + git hooks
+**Check**: `jj status` before file modifications.
 
-Every `jj git push` requires two checks beforehand:
+- Matches current task → proceed
+- Empty or different task → `jj new main`
 
-1. `jj log` — verify bookmark state
-   - Bookmark attached to the target commit → proceed
-   - Bookmark shows only `<name>@origin` with no local counterpart → push deletes the remote branch. Run `jj bookmark set <name> -r <rev>` first.
-2. Git hook runner — jj does not run git hooks automatically. If a hook runner config exists in the project root (e.g., `lefthook.yml`, `.husky/`), run the hooks that correspond to git hook timing manually. Map: `pre-commit` and `pre-push` both fire before `jj git push`; `commit-msg` fires after `jj describe`.
+### Bookmarks stay attached after rewrites
 
-### Example: squash and push
+`jj squash --into` rewrites the target commit. Bookmarks pointing to the old commit detach. A detached bookmark (`<name>@origin` only, no local counterpart) causes `jj git push` to delete the remote branch.
 
-```bash
-jj squash --into kkmpxqrs -m "fix: apply focus-visible outline"
-jj log --limit 3                                          # post-squash gate
-# → bookmark missing from kkmpxqrs → re-attach
-jj bookmark set fix/focus -r kkmpxqrs
-jj log --limit 3                                          # pre-push gate (1)
-# → bookmark attached
-<hook-runner> run pre-push                                # pre-push gate (2)
-# → checks passed → safe to push
-jj git push -b fix/focus
-```
+**Check**: `jj log` after every `jj squash --into`.
 
-## Commands
+- Attached → proceed
+- Detached → `jj bookmark set <name> -r <rev>`
 
-All commands that accept a message require `-m "message"`. No interactive editor.
+### Each commit contains one logical context
 
-| Action | Command |
-|--------|---------|
-| Create new change | `jj new main` |
-| Check status | `jj status` |
-| View diff | `jj diff` |
-| Set commit message | `jj describe -m "message"` |
-| View history | `jj log` |
-| Push to remote | `jj git push` |
-| Squash into another change | `jj squash --into <rev> -m "message"` |
+Mixing unrelated changes in one commit makes revert, cherry-pick, and review unreliable — reverting one fix silently undoes an unrelated refactor.
 
-## Commit Message Format
+**Check**: `jj diff` before `jj describe`. If the diff serves more than one purpose, `jj split` to separate by context.
 
-Use Conventional Commits: `type: description`
+- Single context → proceed
+- Multiple contexts (describable only with "and") → `jj split`, then describe each commit separately
 
-Types: feat, fix, refactor, docs, test, chore, perf, ci
+### Git hooks run before push
+
+jj does not execute git hooks. Without manual execution, pre-commit and pre-push checks are skipped silently.
+
+**Check**: Before `jj git push`, if a hook runner config exists (`lefthook.yml`, `.husky/`), run hooks manually. Timing map: `pre-commit` and `pre-push` → before push. `commit-msg` → after `jj describe`.
