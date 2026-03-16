@@ -15,3 +15,5 @@ keybind = shift+enter=text:\n
 
 maximize = true
 
+window-save-state = always
+
