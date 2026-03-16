@@ -2,6 +2,7 @@ AGENTS.md
 CLAUDE.md
 LICENSE
 README.md
+lefthook.yml
 node_modules
 package.json
 package-lock.json
