@@ -49,6 +49,15 @@ Mixing unrelated changes in one commit makes revert, cherry-pick, and review unr
 - Single context → proceed
 - Multiple contexts (describable only with "and") → `jj split`, then describe each commit separately
 
+### Completed work carries a description
+
+Undescribed commits accumulate silently. Without a message, the history loses the intent that motivated the change.
+
+**Check**: After file modifications are complete and tests pass (if applicable).
+
+- Working copy has meaningful changes → `jj describe -m "type: summary"` (following Constraints above), then `jj new`
+- Working copy is empty or already described → proceed
+
 ### Git hooks run before push
 
 jj does not execute git hooks. Without manual execution, pre-commit and pre-push checks are skipped silently.
