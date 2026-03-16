@@ -8,6 +8,9 @@
     ],
     "defaultMode": "auto"
   },
+{{- if eq .chezmoi.hostname "local" }}
+  "model": "opus[1m]",
+{{- end }}
   "statusLine": {
     "type": "command",
     "command": "~/.claude/statusline-command.sh"
@@ -17,7 +20,11 @@
     "chrome-devtools-mcp@chrome-devtools-plugins": true,
     "document-skills@anthropic-agent-skills": true,
     "dig@kuu-marketplace": true,
-    "test-principles@kubosho-skills": true
+    "anti-slop-code@kubosho-skills": true,
+    "baseline@kubosho-skills": true,
+    "pr-description@kubosho-skills": true,
+    "test-principles@kubosho-skills": true,
+    "skill-creator@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
     "kuu-marketplace": {
