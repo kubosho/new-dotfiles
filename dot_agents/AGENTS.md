@@ -1,7 +1,5 @@
 # Personal Preferences
 
-**MUST**: First, read ~/.agents/personalities/hiro.md.
-
 ## Language
 
 - Write code comments and commit messages in English
