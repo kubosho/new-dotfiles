@@ -8,7 +8,7 @@ Every commit carries a single reason and motivation for the change, making the h
 
 ## Constraints
 
-- All commands that accept a message use `-m "message"`. No interactive editor.
+- Claude Code has no TTY. Commands that open an interactive UI (editor launch, `--interactive` flag) always fail. Use non-interactive alternatives instead: `-m "message"` for commits, fileset arguments for splits, etc.
 - Commit message format:
   ```
   type: summary
@@ -44,10 +44,11 @@ These conditions must hold true at each stage. When violated, the fix restores t
 
 Mixing unrelated changes in one commit makes revert, cherry-pick, and review unreliable — reverting one fix silently undoes an unrelated refactor.
 
-**Check**: `jj diff` before `jj describe`. If the diff serves more than one purpose, `jj split` to separate by context.
+**Check**: `jj diff` before `jj describe`.
 
-- Single context → proceed
-- Multiple contexts (describable only with "and") → `jj split`, then describe each commit separately
+- Single context, no temporary files → proceed
+- Temporary files present → `jj restore --from @- <files>` to remove them
+- Multiple contexts (describable only with "and") → `jj split -m "type: summary" <filesets>` to separate by context, then describe remaining commit separately
 
 ### Completed work carries a description
 
@@ -57,6 +58,15 @@ Undescribed commits accumulate silently. Without a message, the history loses th
 
 - Working copy has meaningful changes → `jj describe -m "type: summary"` (following Constraints above), then `jj new`
 - Working copy is empty or already described → proceed
+
+### Push targets a named bookmark
+
+`jj git push` requires a bookmark. Without one, push fails or targets the wrong revision.
+
+**Check**: `jj log` before `jj git push`.
+
+- Bookmark exists on the target revision → proceed
+- No bookmark on the target → `jj bookmark create <name> -r <rev>`
 
 ### Git hooks run before push
 
