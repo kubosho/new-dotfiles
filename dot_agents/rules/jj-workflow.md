@@ -29,7 +29,7 @@ These conditions must hold true at each stage. When violated, the fix restores t
 **Check**: `jj status` before file modifications.
 
 - Matches current task → proceed
-- Empty or different task → `jj new main`
+- Empty or different task → `jj new <base>` where `<base>` is the branch the task depends on (default: `main`)
 
 ### Bookmarks stay attached after rewrites
 
@@ -44,11 +44,11 @@ These conditions must hold true at each stage. When violated, the fix restores t
 
 Mixing unrelated changes in one commit makes revert, cherry-pick, and review unreliable — reverting one fix silently undoes an unrelated refactor.
 
-**Check**: `jj diff` before `jj describe`.
+**Check**: `jj diff` before `jj describe`. `jj diff -r <rev>` for each commit in the push range before `jj git push`.
 
-- Single context, no temporary files → proceed
-- Temporary files present → `jj restore --from @- <files>` to remove them
+- Single context → proceed
 - Multiple contexts (describable only with "and") → `jj split -m "type: summary" <filesets>` to separate by context, then describe remaining commit separately
+- Changes address multiple review comments → each comment is a separate context, split per comment
 
 ### Completed work carries a description
 
