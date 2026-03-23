@@ -24,6 +24,8 @@ Every commit carries a single reason and motivation for the change, making the h
 
 These conditions must hold true at each stage. When violated, the fix restores them.
 
+Some invariants are enforced by hooks (`~/.claude/hooks/jj-*.sh`). Those marked **[hook]** are automated and do not require manual checks.
+
 ### Working copy belongs to the current task
 
 **Check**: `jj status` before file modifications.
@@ -31,45 +33,17 @@ These conditions must hold true at each stage. When violated, the fix restores t
 - Matches current task → proceed
 - Empty or different task → `jj new <base>` where `<base>` is the branch the task depends on (default: `main`)
 
-### Bookmarks stay attached after rewrites
+### Bookmarks stay attached after rewrites **[hook: PostToolUse]**
 
-`jj squash --into` rewrites the target commit. Bookmarks pointing to the old commit detach. A detached bookmark (`<name>@origin` only, no local counterpart) causes `jj git push` to delete the remote branch.
-
-**Check**: `jj log` after every `jj squash --into`.
+A hook runs `jj log` after `jj squash` and provides context. Act on it:
 
 - Attached → proceed
-- Detached → `jj bookmark set <name> -r <rev>`
+- Detached (`<name>@origin` only, no local counterpart) → `jj bookmark set <name> -r <rev>`
 
-### Each commit contains one logical context
+### Each commit contains one logical context **[hook: PreToolUse]**
 
-Mixing unrelated changes in one commit makes revert, cherry-pick, and review unreliable — reverting one fix silently undoes an unrelated refactor.
-
-**Check**: `jj diff` before `jj describe`. `jj diff -r <rev>` for each commit in the push range before `jj git push`.
+A hook provides `jj diff --stat` before `jj describe`. Use the output to judge:
 
 - Single context → proceed
 - Multiple contexts (describable only with "and") → `jj split -m "type: summary" <filesets>` to separate by context, then describe remaining commit separately
 - Changes address multiple review comments → each comment is a separate context, split per comment
-
-### Completed work carries a description
-
-Undescribed commits accumulate silently. Without a message, the history loses the intent that motivated the change.
-
-**Check**: After file modifications are complete and tests pass (if applicable).
-
-- Working copy has meaningful changes → `jj describe -m "type: summary"` (following Constraints above), then `jj new`
-- Working copy is empty or already described → proceed
-
-### Push targets a named bookmark
-
-`jj git push` requires a bookmark. Without one, push fails or targets the wrong revision.
-
-**Check**: `jj log` before `jj git push`.
-
-- Bookmark exists on the target revision → proceed
-- No bookmark on the target → `jj bookmark create <name> -r <rev>`
-
-### Git hooks run before push
-
-jj does not execute git hooks. Without manual execution, pre-commit and pre-push checks are skipped silently.
-
-**Check**: Before `jj git push`, if a hook runner config exists (`lefthook.yml`, `.husky/`), run hooks manually. Timing map: `pre-commit` and `pre-push` → before push. `commit-msg` → after `jj describe`.
