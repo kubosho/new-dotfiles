@@ -26,6 +26,10 @@ These conditions must hold true at each stage. When violated, the fix restores t
 
 Some invariants are enforced by hooks (`~/.claude/hooks/jj-*.sh`). Those marked **[hook]** are automated and do not require manual checks.
 
+### Pre-existing undescribed changes are resolved at session start **[hook: SessionStart]**
+
+A hook detects undescribed changes in the working copy when a session begins. Use AskUserQuestion to ask the user how to handle them (describe, abandon, or ignore) before starting any work. This prevents the Stop hook from repeatedly firing about changes unrelated to the current session.
+
 ### Working copy belongs to the current task
 
 **Check**: `jj status` before file modifications.
