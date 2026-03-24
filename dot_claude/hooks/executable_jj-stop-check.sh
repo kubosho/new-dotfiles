@@ -6,7 +6,7 @@ set -euo pipefail
 
 # exit 0 = skip hook silently (allow stop)
 # Conditions: jq/jj not installed, cwd inaccessible, not a jj repo, working copy has no changes, or working copy already has a description
-# Note: jj-post-tool-use.sh auto-runs jj new after jj describe, so "has description but new changes" should not normally occur
+# Note: working copy may have both a description and new changes if work continues after jj describe
 command -v jq >/dev/null 2>&1 || exit 0
 command -v jj >/dev/null 2>&1 || exit 0
 

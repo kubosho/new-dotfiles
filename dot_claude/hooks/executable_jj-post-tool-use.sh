@@ -1,6 +1,6 @@
 #!/bin/bash
 # PostToolUse hook for Bash tool
-# - jj describe: auto-run jj new to start a fresh working copy
+# - jj describe: check bookmark attachment
 # - jj squash: check bookmark attachment after rewrite
 
 set -euo pipefail
@@ -19,15 +19,12 @@ cd "$CWD" 2>/dev/null || exit 0
 
 case "$COMMAND" in
   *"jj describe"*)
-    # Start a fresh working copy so subsequent changes don't silently amend the described commit
-    jj new 2>/dev/null || true
-
-    # Check if the described commit (now @-) has a bookmark
-    PARENT_BOOKMARKS=$(jj log --no-graph -r '@-' -T 'bookmarks' 2>/dev/null || echo "")
-    if [[ -z "$PARENT_BOOKMARKS" ]]; then
-      PARENT_LOG=$(jj log --no-graph -r '@-' 2>/dev/null || echo "")
-      jq -n --arg ctx "[jj-workflow] The described commit has no bookmark. If this commit should be pushed, create one: jj bookmark create <name> -r @-
-$PARENT_LOG" \
+    # Check if the described commit has a bookmark
+    BOOKMARKS=$(jj log --no-graph -r '@' -T 'bookmarks' 2>/dev/null || echo "")
+    if [[ -z "$BOOKMARKS" ]]; then
+      CURRENT_LOG=$(jj log --no-graph -r '@' 2>/dev/null || echo "")
+      jq -n --arg ctx "[jj-workflow] The described commit has no bookmark. If this commit should be pushed, create one: jj bookmark create <name> -r @
+$CURRENT_LOG" \
         '{hookSpecificOutput: {hookEventName: "PostToolUse", additionalContext: $ctx}}'
     fi
     ;;
